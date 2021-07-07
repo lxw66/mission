@@ -1,0 +1,68 @@
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /lxw
+    #确认消息已发送到队列(Queue)
+    publisher-returns: true
+    #确认消息已发送到交换机(Exchange)    springboot版本导致 publisher-confirms: true 替换为  publisher-confirm-type: correlated
+    publisher-confirm-type: correlated
+  profiles:
+    active: dev
+server:
+  port: 8082
+
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+
+
+#最大连接数
+http:
+  maxTotal: 100        #最大连接数
+  defaultMaxPerRoute: 20       #并发数
+  connectTimeout: 1000           #创建连接的最长时间
+  connectionRequestTimeout: 500  #从连接池中获取到连接的最长时间
+  socketTimeout: 10000            #数据传输的最长时间
+  staleConnectionCheckEnabled: true  #提交请求前测试连接是否可用
+
+#FTP配置
+FTP:
+  ip: 192.168.0.171
+  port: 21
+  userName:
+  passWord:
+  encoding: UTF-8
+  connectiontime: 60000
+  dateTimeOut: 60000
+
+Netty:
+  clientIp: 127.0.0.1
+  clientPort: 4086
+
+
+
+UDP:
+  serverPort: 8090
+  clientPort: 8092
+  ip: 127.0.0.1
+  max_udp_data_size: 4069
+
+TCP:
+  serverPort: 8094
+  ip: 127.0.0.1
+  max_udp_data_size: 4069
+
+#线程池
+THREAD:
+  pool-size: 50           #核心线程数
+  max-pool-size: 100     #最大线程数
+  queueCapacity: 1000    #队列大小
+  keepAliveSeconds: 300    #存活时间
+  prefix: lxw             #线程前缀
+#测试的玩意
+Comment:
+  here: lxw
+
+
