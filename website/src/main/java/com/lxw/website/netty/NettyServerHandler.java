@@ -1,10 +1,14 @@
 package com.lxw.website.netty;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,16 +18,16 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2021年07月05日 13:31
  */
 @Slf4j
-public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
+public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     private static ChannelGroup channels=new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-
-    //重写  SimpleChannelInboundHandler。channelRead0
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
-        log.info("接收到客户端消息：{}", s);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        ByteBuf byteBuf = (ByteBuf) msg;
+        log.info("接收到客户端消息：--"+byteBuf.toString(CharsetUtil.UTF_8));
     }
+
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
@@ -39,6 +43,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
+        ctx.writeAndFlush(Unpooled.copiedBuffer("服务端准备完毕！", CharsetUtil.UTF_8));
         log.info("NettyServer:" + incoming.remoteAddress() + "在线");
     }
     @Override
