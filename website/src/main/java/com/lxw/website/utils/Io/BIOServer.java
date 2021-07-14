@@ -43,7 +43,7 @@ public class BIOServer implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        log.info("----异步初始---");
+        log.info("----BIO异步初始---");
         threadPoolConfig.asyncThreadExecutor().execute(()->{
             this.sedMsg();
         });

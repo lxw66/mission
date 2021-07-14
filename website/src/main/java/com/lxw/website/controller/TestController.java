@@ -11,18 +11,14 @@ import com.lxw.website.utils.XMLUtils.XmlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.xml.sax.SAXException;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * @author LXW
@@ -108,6 +104,28 @@ public class TestController {
         File file=new File("E:/test.xml");
         //xmlUtils.dom4jxml(file);
         xmlUtils.dom4jxml(file);
+    }
+
+    @GetMapping("/getVideo.json")
+    public void getVideo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.reset();
+        File file=new File("D:\\ChromeCoreDownloads\\3fa382ba-6db9-4b69-ad77-61a6476275cf.mkv");
+        RandomAccessFile randomAccessFile=new RandomAccessFile(file,"r");
+        String stringRange=request.getHeader("Range");
+        long range=0;
+        if(!stringRange.isEmpty()){
+            range=Long.valueOf(stringRange.substring(stringRange.indexOf("=")+1,stringRange.indexOf("-")));
+        }
+        randomAccessFile.seek(range);
+        byte[] bytes=new byte[1024*1024*10];
+        int len=randomAccessFile.read(bytes);
+        response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+        response.setContentLength(len);
+        OutputStream outputStream=response.getOutputStream();
+        response.setHeader("Content-Range","bytes:"+range+"-"+(file.length()-1)+"/"+file.length());
+        outputStream.write(bytes,0,len);
+        outputStream.close();
+        randomAccessFile.close();
     }
 
 

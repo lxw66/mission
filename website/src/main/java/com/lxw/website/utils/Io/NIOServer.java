@@ -42,7 +42,7 @@ public class NIOServer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        log.info("----BIO异步初始---");
+        log.info("----NIO异步初始---");
         threadPoolConfig.asyncThreadExecutor().execute(()->{
             sedMsg();
         });

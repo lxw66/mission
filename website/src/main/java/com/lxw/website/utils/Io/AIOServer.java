@@ -4,6 +4,7 @@ import com.lxw.website.thread.ThreadPoolConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContextEvent;
@@ -27,14 +28,16 @@ public class AIOServer implements ServletContextListener {
     private int serverPort;
     @Value("${TCP.ip}")
     private String tcpIp;
-    @Autowired
-    ThreadPoolConfig threadPoolConfig;
+   /* @Autowired
+    ThreadPoolConfig threadPoolConfig;*/
     @Override
+    @Async("asyncThreadExecutor")
     public void contextInitialized(ServletContextEvent sce) {
-        log.info("---异步开始");
-        threadPoolConfig.asyncThreadExecutor().execute(()->{
+        log.info("---AIO异步开始");
+        sendMsg();
+        /*threadPoolConfig.asyncThreadExecutor().execute(()->{
             sendMsg();
-        });
+        });*/
     }
 
     @Override

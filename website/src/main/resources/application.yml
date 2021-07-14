@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    async:
+      request-timeout: 20000
   rabbitmq:
     host: 127.0.0.1
     port: 5672
