@@ -1,4 +1,9 @@
 spring:
+  elasticsearch:
+    rest:
+      uris: http://172.18.121.61:9200
+      username: elastic
+      password: password
   mvc:
     async:
       request-timeout: 20000
@@ -67,5 +72,11 @@ THREAD:
 #测试的玩意
 Comment:
   here: lxw
+
+elasticsearch:
+  host: 172.28.60.78
+  port: 9200
+  userName: elastic
+  password: password
 
 

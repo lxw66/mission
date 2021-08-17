@@ -6,6 +6,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ResourceLeakDetector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -46,6 +47,7 @@ public class NettyService {
                     //将小的数据包包装成更大的帧进行传送，提高网络的负载,即TCP延迟传输
                     .childOption(ChannelOption.TCP_NODELAY,true)
                     .childHandler(new NettyServerInitializer());
+            ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
             ChannelFuture channelFuture=serverBootstrap.bind().sync();
             if(channelFuture.isSuccess()){
                 log.info("启动 Netty Server");

@@ -19,7 +19,7 @@ public class MyExceptionControllerAdvice {
     @ExceptionHandler(value=MyException.class)
     @ResponseBody
     public Map  expectionHandler(MyException exception){
-        Map<String, Object> map=new HashMap<>();
+        Map<String, Object> map=new HashMap<String, Object>();
         map.put("code",exception.getCode());
         map.put("message",exception.getMessage());
         map.put("info",exception.getDecinfo());
