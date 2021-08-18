@@ -78,5 +78,7 @@ elasticsearch:
   port: 9200
   userName: elastic
   password: password
+  connectNum: 10
+  connectPerRoute: 30
 
 

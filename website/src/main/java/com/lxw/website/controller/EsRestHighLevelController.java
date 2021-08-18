@@ -21,8 +21,10 @@ import java.io.IOException;
 @RequestMapping("/esRestHighLevelController")
 public class EsRestHighLevelController {
 
+
     @Autowired
     Esutil esutil;
+
 
 
     @RequestMapping(value="/getIndexIsExit.json")
@@ -35,6 +37,27 @@ public class EsRestHighLevelController {
     private Object getIndexDate(@RequestParam(value = "indexName")String indexName) throws IOException {
         return esutil.getIndexDate(indexName);
     }
+
+    @RequestMapping(value="/addDate.json")
+    private Object addDate() throws IOException {
+        return esutil.addDate();
+    }
+
+    @RequestMapping(value="/addDateAll.json")
+    private Object addDateAll() throws IOException {
+        return esutil.addDates();
+    }
+
+    @RequestMapping(value="/deleteDateByType.json")
+    private Object deleteDateByType() throws IOException {
+        return esutil.delateDate();
+    }
+
+    @RequestMapping(value="/updateDate.json")
+    private Object updateDate() throws IOException {
+        return esutil.update();
+    }
+
 
 
 }

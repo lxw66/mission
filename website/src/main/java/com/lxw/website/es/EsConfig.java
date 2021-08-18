@@ -5,6 +5,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.tomcat.util.http.parser.Host;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 /**
  * @author mission
@@ -30,9 +32,14 @@ public class EsConfig {
     private String userName;
     @Value("${elasticsearch.password}")
     private String password;
+    @Value("${elasticsearch.connectNum}")
+    private int connectNum;
+    @Value("${elasticsearch.connectPerRoute}")
+    private int connectPerRoute;
 
     public static final String SCHEME = "http";
 
+    /*
     @Bean(name = "highLevelClient")
     public RestHighLevelClient restHighLevelClient() {
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
@@ -41,5 +48,31 @@ public class EsConfig {
         RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(esHost, esPort, SCHEME))
                 .setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
         return new RestHighLevelClient(restClientBuilder);
+    }
+     */
+
+    @Bean
+    public HttpHost getHttpHost(){
+        return  new HttpHost(esHost,esPort,SCHEME);
+    }
+
+    /**
+     * 指向初始化的方法  和销毁方法
+     * @return
+     */
+    @Bean(initMethod = "init",destroyMethod = "close")
+    public ESClientSpringFactory getESClientSpringFactory(){
+        return  ESClientSpringFactory.build(userName,password,getHttpHost(),connectNum,connectPerRoute);
+    }
+
+    @Bean("getRestClient")
+    @Scope("singleton")
+    public RestClient getRestClient(){
+        return getESClientSpringFactory().getRestClient();
+    }
+    @Bean("getRestHighLevelClient")
+    @Scope("singleton")
+    public RestHighLevelClient getRestHighLevelClient(){
+        return getESClientSpringFactory().getRestHighLevelClient();
     }
 }

@@ -33,11 +33,11 @@ public class esuser {
     private int age;
     private String  text;
 
-    public int getUser_id() {
+    public int getUserid() {
         return userid;
     }
 
-    public void setUser_id(int userid) {
+    public void setUserid(int userid) {
         this.userid = userid;
     }
 
@@ -89,8 +89,8 @@ public class esuser {
         this.text = text;
     }
 
-    public esuser(int user_id, String username, String email, String gender, String createtime, int age, String text) {
-        this.userid = user_id;
+    public esuser(int userid, String username, String email, String gender, String createtime, int age, String text) {
+        this.userid = userid;
         this.username = username;
         this.email = email;
         this.gender = gender;
