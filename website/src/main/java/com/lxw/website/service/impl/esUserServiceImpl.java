@@ -7,6 +7,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TotalHitCountCollector;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -39,11 +40,6 @@ public class esUserServiceImpl implements esUserService {
 
     @Autowired
     private com.lxw.website.dao.esUserRepository esUserRepository;
-
-    @Autowired
-    ElasticsearchOperations elasticsearchOperations;
-
-
     //ElasticsearchRestTemplate是Spring封装ES客户端的一些原生api模板，方便实现一些查询，和ElasticsearchTemplate一样，
     // 但是目前spring推荐使用前者，是一种更高级的REST风格api。
     @Autowired
@@ -59,10 +55,38 @@ public class esUserServiceImpl implements esUserService {
         esUserRepository.deleteAll();
     }
 
+    /**
+     * 通过对象删除
+     * @param esuser
+     */
+    @Override
+    public void deleteUser(esuser esuser) {
+        esUserRepository.delete(esuser);
+    }
+
+    /**
+     * 通过id删除
+     * @param id
+     */
+    @Override
+    public void deletebyId(String id) {
+        esUserRepository.deleteById(id);
+    }
+
+    /**
+     * 通过姓名删除
+     * @param userName
+     */
+    @Override
+    public void deleteUserByuserName(String userName) {
+        esUserRepository.deleteAllByUsername(userName);
+    }
+
     @Override
     public long getAllCount() {
         return esUserRepository.count();
     }
+
 
     @Override
     public List<esuser> findMaxuserId() {
@@ -94,9 +118,12 @@ public class esUserServiceImpl implements esUserService {
         esUserRepository.saveAll(esuser);
     }
 
+
     @Override
     public PageResult getDate(Integer currentPage, Integer limit) {
-        NativeSearchQuery query = new NativeSearchQuery(new BoolQueryBuilder());
+        //查询条件如此添加
+        MatchQueryBuilder matchQueryBuilder=new MatchQueryBuilder("username", "value");
+        NativeSearchQuery query = new NativeSearchQuery(matchQueryBuilder);
         query.setPageable(PageRequest.of(currentPage, limit));
         SearchHits<esuser> searchHits = elasticsearchRestTemplate.search(query, esuser.class);
         //查询出总页码

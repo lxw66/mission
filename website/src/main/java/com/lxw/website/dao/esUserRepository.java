@@ -1,6 +1,8 @@
 package com.lxw.website.dao;
 
 import com.lxw.website.domain.esuser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
 import java.util.List;
@@ -18,5 +20,9 @@ public interface esUserRepository  extends ElasticsearchRepository<esuser,String
     List<esuser> findByUsername(String username);
 
     List<esuser> findByUsernameStartingWith(String username);
+
+    void deleteAllByUsername(String userName);
+
+    Page<esuser> findAllByUsername(String userName, PageRequest pageRequest);
 
 }

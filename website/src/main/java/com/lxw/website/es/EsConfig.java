@@ -39,18 +39,6 @@ public class EsConfig {
 
     public static final String SCHEME = "http";
 
-    /*
-    @Bean(name = "highLevelClient")
-    public RestHighLevelClient restHighLevelClient() {
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        //带密码访问
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(userName,password));
-        RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(esHost, esPort, SCHEME))
-                .setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
-        return new RestHighLevelClient(restClientBuilder);
-    }
-     */
-
     @Bean
     public HttpHost getHttpHost(){
         return  new HttpHost(esHost,esPort,SCHEME);

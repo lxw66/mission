@@ -78,20 +78,6 @@ public class Esutil<T> {
         return  indexResponse;
 
     }
-
-    /**
-     * 删除数据
-     * @return
-     * @throws IOException
-     */
-    public Object delateDate() throws IOException {
-        DeleteByQueryRequest deleteByQueryRequest=new DeleteByQueryRequest("es_test");
-        deleteByQueryRequest.setQuery(new MatchQueryBuilder("userid",1));
-        BulkByScrollResponse deleteResponse=restHighLevelClient.deleteByQuery(deleteByQueryRequest,RequestOptions.DEFAULT);
-        return  deleteResponse;
-
-    }
-
     /**
      * 多条新增数据
      * @return
@@ -111,6 +97,19 @@ public class Esutil<T> {
     }
 
     /**
+     * 删除数据
+     * @return
+     * @throws IOException
+     */
+    public Object delateDate() throws IOException {
+        DeleteByQueryRequest deleteByQueryRequest=new DeleteByQueryRequest("es_test");
+        deleteByQueryRequest.setQuery(new MatchQueryBuilder("userid",1));
+        BulkByScrollResponse deleteResponse=restHighLevelClient.deleteByQuery(deleteByQueryRequest,RequestOptions.DEFAULT);
+        return  deleteResponse;
+
+    }
+
+    /**
      * 修改数据
      * @return
      * @throws IOException
@@ -119,8 +118,12 @@ public class Esutil<T> {
         UpdateByQueryRequest updateByQueryRequest=new UpdateByQueryRequest("es_test");
         updateByQueryRequest.setTimeout("20S");
         updateByQueryRequest.setConflicts("proceed");
-        updateByQueryRequest.setQuery(new TermQueryBuilder("userid","1"));
-        updateByQueryRequest.setScript(new Script(ScriptType.INLINE,"painless","if (ctx._source.userid == 1) {ctx._source.username='刘新闻'; }" , Collections.emptyMap()));
+        String s=",ces";
+        //updateByQueryRequest.setQuery(new TermQueryBuilder("userid","1"));
+        RangeQueryBuilder queryBuilder=new RangeQueryBuilder("userid");
+        queryBuilder.gte(0);
+        updateByQueryRequest.setQuery(queryBuilder);
+        updateByQueryRequest.setScript(new Script(ScriptType.INLINE,"painless","if (ctx._source.userid > 0) {ctx._source.username=ctx._source.username+'张正峰'+'"+s+"'; }" , Collections.emptyMap()));
         BulkByScrollResponse bulkByScrollResponse=restHighLevelClient.updateByQuery(updateByQueryRequest,RequestOptions.DEFAULT);
         return bulkByScrollResponse    ;
     }
@@ -148,12 +151,12 @@ public class Esutil<T> {
         //match 匹配字段值
         //MatchQueryBuilder matchQueryBuilder=new MatchQueryBuilder("username","样想念它我会怎样想念");
         //Range条件
-        RangeQueryBuilder queryBuilder=new RangeQueryBuilder("userid");
-        queryBuilder.gte(0); queryBuilder.lte(10000000);
+        //RangeQueryBuilder queryBuilder=new RangeQueryBuilder("userid");
+        //queryBuilder.gte(0); queryBuilder.lte(10000000);
         //添加条件
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //boolQueryBuilder.must(matchQueryBuilder);
-        boolQueryBuilder.must(queryBuilder);
+        //boolQueryBuilder.must(queryBuilder);
 
         searchSourceBuilder.query(boolQueryBuilder);
         //指定请求索引

@@ -1,4 +1,19 @@
 spring:
+  redis:
+    host: 192.168.0.100
+    port: 6379
+    password: password
+    database: 0
+    jedis:
+      pool:
+        max-active: 10  #连接池的最大数据库连接数。设为0表示无限制,如果是jedis 2.4以后用redis.maxTotal
+        max-idle: 10   #最大空闲数
+        max-wait: 3600 #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制
+    timeout: 3600
+    sentinel:
+      master: lxw
+      nodes: 192.168.0.100:6378
+      password: password
   elasticsearch:
     rest:
       uris: http://172.18.121.61:9200
@@ -74,7 +89,7 @@ Comment:
   here: lxw
 
 elasticsearch:
-  host: 172.28.60.78
+  host: 192.168.0.100
   port: 9200
   userName: elastic
   password: password

@@ -10,7 +10,11 @@ public interface esUserService {
 
     void deleteAll();
 
+    void deleteUser(esuser esuser);
+
     long getAllCount();
+
+    void deleteUserByuserName(String  userName);
 
     List<esuser> findMaxuserId();
 
@@ -19,6 +23,8 @@ public interface esUserService {
     void save(esuser esuser);
 
     void saveAll(List<esuser> esuser);
+
+    void deletebyId(String id);
 
     PageResult getDate(Integer currentPage, Integer limit);
 
