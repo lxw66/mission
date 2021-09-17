@@ -9,6 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 /**
@@ -42,6 +44,24 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
             return true;
      }
+
+    private void returnJson(HttpServletResponse response, String result) throws Exception {
+        PrintWriter writer = null;
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=utf-8");
+        try {
+            writer = response.getWriter();
+            writer.print(result);
+
+        } catch (IOException e) {
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
+
+    }
+
 
 
     @Override

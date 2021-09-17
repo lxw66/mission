@@ -14,6 +14,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.GetIndexRequest;
@@ -50,6 +51,7 @@ public class Esutil<T> {
 
     @Resource(description = "getRestHighLevelClient")
     private RestHighLevelClient restHighLevelClient;
+
 
     /**
      * 判断索引是否存在

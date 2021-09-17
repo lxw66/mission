@@ -1,5 +1,6 @@
 package com.lxw.website.controller;
 
+import com.lxw.website.annotation.PassToken;
 import com.lxw.website.http.HttpApiService;
 import com.lxw.website.service.TestService;
 import com.lxw.website.utils.FTP.FTPConfig;
@@ -55,7 +56,6 @@ public class TestController {
     @RequestMapping(value = "/insert.json",method = RequestMethod.POST)
     public void  insert(@RequestParam(value = "action",defaultValue = "",required = true)String action,
                           @RequestParam(value = "date",defaultValue = "",required = true)String date){
-
          testService.insertDate(action,date);
     }
 
